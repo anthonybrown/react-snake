@@ -51,30 +51,6 @@ const doChangeDirection = (direction) => () => ({
 });
 
 const applySnakePosition = prevState => {
-	/* THIS CHECK IS TOO VERBOSE, WE CAN DO BETTER */
-	//let x;
-	//let y;
-
-	//if (prevState.playground.direction === DIRECTIONS.RIGHT) {
-	//	x = prevState.snake.coordinate.x + 1;
-	//	y = prevState.snake.coordinate.y;
-	//}
-
-	//if (prevState.playground.direction === DIRECTIONS.LEFT) {
-	//	x = prevState.snake.coordinate.x - 1;
-	//	y = prevState.snake.coordinate.y;
-	//}
-
-	//if (prevState.playground.direction === DIRECTIONS.UP) {
-	//	x = prevState.snake.coordinate.x;
-	//	y = prevState.snake.coordinate.y - 1;
-	//}
-
-	//if (prevState.playground.direction === DIRECTIONS.BOTTOM) {
-	//	x = prevState.snake.coordinate.x;
-	//	y = prevState.snake.coordinate.y + 1;
-	//}
-
   const directionFn = DIRECTION_TICKS[prevState.playground.direction];
 	const coordinate  = directionFn(prevState.snake.coordinate.x, prevState.snake.coordinate.y)
 
