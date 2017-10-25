@@ -1,30 +1,30 @@
 .app {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .grid-row {
-	display: flex;
-	flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .grid-cell {
-	width: 15px;
-	height: 15px;
+  width: 15px;
+  height: 15px;
 
-	border-top: 1px solid #000000;
-	border-left: 1px solid #000000;
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
 }
 
 .grid-cell-border {
-	background-color: #000000;
+  background-color: #000000;
 }
 
 .grid-cell-snake {
-	background-color: #000000;
+  background-color: #000000;
 }
 
 .grid-cell-snack {
-	background-color: #688aad;
+  background-color: #688aad;
 }
