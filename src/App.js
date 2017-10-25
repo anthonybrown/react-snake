@@ -18,71 +18,71 @@ const DIRECTIONS = {
 };
 
 const DIRECTION_TICKS = {
-	UP: (x, y) => ({ x, y: y - 1 }),
-	BOTTOM: (x, y) => ({ x, y: y + 1 }),
-	RIGHT: (x, y) => ({ x: x + 1, y }),
-	LEFT: (x, y) => ({ x: x - 1, y }),
+  UP: (x, y) => ({ x, y: y - 1 }),
+  BOTTOM: (x, y) => ({ x, y: y + 1 }),
+  RIGHT: (x, y) => ({ x: x + 1, y }),
+  LEFT: (x, y) => ({ x: x - 1, y }),
 }
 
 const KEY_CODES_MAPPER = {
-	38: 'UP',
-	39: 'RIGHT',
-	37: 'LEFT',
-	40: 'BOTTOM'
+  38: 'UP',
+  39: 'RIGHT',
+  37: 'LEFT',
+  40: 'BOTTOM'
 };
 
 const isBorder = (x, y) =>
-	x === 0 || y === 0 || x === GRID_SIZE || y === GRID_SIZE;
+  x === 0 || y === 0 || x === GRID_SIZE || y === GRID_SIZE;
 
 const isPosition = (x, y, diffX, diffY) =>
   x === diffX && y === diffY;
 
 const getCellCs = (snake, snack, x, y) =>
-	cs('grid-cell', {
-		'grid-cell-border': isBorder(x, y),
-		'grid-cell-snake': isPosition(x, y, snake.coordinate.x, snake.coordinate.y),
-		'grid-cell-snack': isPosition(x, y, snack.coordinate.x, snack.coordinate.y),
-	});
+  cs('grid-cell', {
+    'grid-cell-border': isBorder(x, y),
+    'grid-cell-snake': isPosition(x, y, snake.coordinate.x, snake.coordinate.y),
+    'grid-cell-snack': isPosition(x, y, snack.coordinate.x, snack.coordinate.y),
+  });
 
 const doChangeDirection = (direction) => () => ({
-	playground: {
-		direction
-	}
+  playground: {
+    direction
+  }
 });
 
 const applySnakePosition = prevState => {
   const directionFn = DIRECTION_TICKS[prevState.playground.direction];
-	const coordinate  = directionFn(prevState.snake.coordinate.x, prevState.snake.coordinate.y)
+  const coordinate  = directionFn(prevState.snake.coordinate.x, prevState.snake.coordinate.y)
 
-	return {
-		snake: {
-			coordinate,
-		}
-	}
+  return {
+    snake: {
+      coordinate,
+    }
+  }
 };
 
 class App extends Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
-			playground: {
-				direction: DIRECTIONS.RIGHT,
-			},
-			snake: {
-				coordinate: {
-					x: 20,
-					y: 10,
-				}
-			},
-			snack: {
-				coordinate: {
-					x: 25,
-					y: 10,
-				}
-			}
-		};
-	}
+    this.state = {
+      playground: {
+        direction: DIRECTIONS.RIGHT,
+      },
+      snake: {
+        coordinate: {
+				  x: 20,
+				  y: 10,
+			  }
+		 },
+		 snack: {
+		   coordinate: {
+			   x: 25,
+				 y: 10,
+			 }
+		 }
+	 };
+ }
 
 	componentDidMount() {
 		this.inerval = setInterval(this.onTick, TICK_RATE);
