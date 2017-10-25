@@ -2,12 +2,34 @@ import React, { Component } from 'react';
 import cs from 'classnames';
 import './App.css';
 
+const TICK_RATE = 400;
 const GRID_SIZE = 35;
 const GRID = [];
 
 for (let i = 0; i <= GRID_SIZE; i++) {
   GRID.push(i);
 }
+
+const DIRECTIONS = {
+  UP    : 'UP',
+  RIGHT : 'RIGHT',
+  LEFT  : 'LEFT',
+  BOTTOM: 'BOTTOM'
+};
+
+const DIRECTION_TICKS = {
+	UP: (x, y) => ({ x, y: y - 1 }),
+	BOTTOM: (x, y) => ({ x, y: y + 1 }),
+	RIGHT: (x, y) => ({ x: x + 1, y }),
+	LEFT: (x, y) => ({ x: x - 1, y }),
+}
+
+const KEY_CODES_MAPPER = {
+	38: 'UP',
+	39: 'RIGHT',
+	37: 'LEFT',
+	40: 'BOTTOM'
+};
 
 const isBorder = (x, y) =>
 	x === 0 || y === 0 || x === GRID_SIZE || y === GRID_SIZE;
@@ -22,11 +44,55 @@ const getCellCs = (snake, snack, x, y) =>
 		'grid-cell-snack': isPosition(x, y, snack.coordinate.x, snack.coordinate.y),
 	});
 
+const doChangeDirection = (direction) => () => ({
+	playground: {
+		direction
+	}
+});
+
+const applySnakePosition = prevState => {
+	/* THIS CHECK IS TOO VERBOSE, WE CAN DO BETTER */
+	//let x;
+	//let y;
+
+	//if (prevState.playground.direction === DIRECTIONS.RIGHT) {
+	//	x = prevState.snake.coordinate.x + 1;
+	//	y = prevState.snake.coordinate.y;
+	//}
+
+	//if (prevState.playground.direction === DIRECTIONS.LEFT) {
+	//	x = prevState.snake.coordinate.x - 1;
+	//	y = prevState.snake.coordinate.y;
+	//}
+
+	//if (prevState.playground.direction === DIRECTIONS.UP) {
+	//	x = prevState.snake.coordinate.x;
+	//	y = prevState.snake.coordinate.y - 1;
+	//}
+
+	//if (prevState.playground.direction === DIRECTIONS.BOTTOM) {
+	//	x = prevState.snake.coordinate.x;
+	//	y = prevState.snake.coordinate.y + 1;
+	//}
+
+  const directionFn = DIRECTION_TICKS[prevState.playground.direction];
+	const coordinate  = directionFn(prevState.snake.coordinate.x, prevState.snake.coordinate.y)
+
+	return {
+		snake: {
+			coordinate,
+		}
+	}
+};
+
 class App extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			playground: {
+				direction: DIRECTIONS.RIGHT,
+			},
 			snake: {
 				coordinate: {
 					x: 20,
@@ -41,6 +107,31 @@ class App extends Component {
 			}
 		};
 	}
+
+	componentDidMount() {
+		this.inerval = setInterval(this.onTick, TICK_RATE);
+
+		window.addEventListener('keyup', this.onChangeDirection, false);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
+
+		window.removeEventListener('keyup', this.onChangeDirection, false);
+	}
+
+	onTick = () => {
+		this.setState(applySnakePosition);
+	}
+
+	onChangeDirection = (e) => {
+		const direction = KEY_CODES_MAPPER[e.keyCode];
+
+		if (direction) {
+			this.setState(doChangeDirection(direction));
+		}
+	}
+
 
   render() {
 		const { snake, snack } = this.state;
