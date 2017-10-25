@@ -71,51 +71,51 @@ class App extends Component {
       },
       snake: {
         coordinate: {
-				  x: 20,
-				  y: 10,
-			  }
-		 },
-		 snack: {
-		   coordinate: {
-			   x: 25,
-				 y: 10,
-			 }
-		 }
-	 };
- }
+          x: 20,
+          y: 10,
+        }
+      },
+      snack: {
+        coordinate: {
+          x: 25,
+          y: 10,
+        }
+      }
+    };
+  }
 
-	componentDidMount() {
-		this.inerval = setInterval(this.onTick, TICK_RATE);
+  componentDidMount() {
+    this.inerval = setInterval(this.onTick, TICK_RATE);
 
-		window.addEventListener('keyup', this.onChangeDirection, false);
-	}
+    window.addEventListener('keyup', this.onChangeDirection, false);
+  }
 
-	componentWillUnmount() {
-		clearInterval(this.interval);
+  componentWillUnmount() {
+    clearInterval(this.interval);
 
-		window.removeEventListener('keyup', this.onChangeDirection, false);
-	}
+    window.removeEventListener('keyup', this.onChangeDirection, false);
+  }
 
-	onTick = () => {
-		this.setState(applySnakePosition);
-	}
+  onTick = () => {
+    this.setState(applySnakePosition);
+  }
 
-	onChangeDirection = (e) => {
-		const direction = KEY_CODES_MAPPER[e.keyCode];
+  onChangeDirection = (e) => {
+    const direction = KEY_CODES_MAPPER[e.keyCode];
 
-		if (direction) {
-			this.setState(doChangeDirection(direction));
-		}
-	}
+    if (direction) {
+      this.setState(doChangeDirection(direction));
+    }
+  }
 
 
   render() {
-		const { snake, snack } = this.state;
+    const { snake, snack } = this.state;
 
     return (
       <div className="app">
-				<h1>Snake</h1>
-				<Grid snake={snake} snack={snack} />
+        <h1>Snake</h1>
+        <Grid snake={snake} snack={snack} />
       </div>
     );
   }
@@ -123,32 +123,32 @@ class App extends Component {
 
 const Grid = ({ snake, snack }) =>
   <div>
-		{GRID.map(y =>
-			<Row
-				y={y}
-				key={y}
-				snake={snake}
-				snack={snack}
-			/>
-		)}
-	</div>
+    {GRID.map(y =>
+      <Row
+        y={y}
+        key={y}
+        snake={snake}
+        snack={snack}
+      />
+    )}
+  </div>
 
 
 const Row = ({ snake, snack, y }) =>
-	<div className="grid-row">
-	  {GRID.map(x =>
-			<Cell
-				x={x}
-				y={y}
-				key={x}
-				snake={snake}
-				snack={snack}
-			/>
-		)}
-	</div>
+  <div className="grid-row">
+    {GRID.map(x =>
+      <Cell
+        x={x}
+        y={y}
+        key={x}
+        snake={snake}
+        snack={snack}
+      />
+    )}
+  </div>
 
 const Cell = ({ snake, snack, x, y }) =>
-	<div className={getCellCs(snake, snack, x, y)}></div>
+  <div className={getCellCs(snake, snack, x, y)}></div>
 
 
 export default App;
