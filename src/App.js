@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import cs from 'classnames';
 import './App.css';
 
@@ -11,31 +11,30 @@ for (let i = 0; i <= GRID_SIZE; i++) {
 }
 
 const DIRECTIONS = {
-  UP    : 'UP',
-  RIGHT : 'RIGHT',
-  LEFT  : 'LEFT',
-  BOTTOM: 'BOTTOM'
+  UP: 'UP',
+  RIGHT: 'RIGHT',
+  LEFT: 'LEFT',
+  BOTTOM: 'BOTTOM',
 };
 
 const DIRECTION_TICKS = {
-  UP: (x, y) => ({ x, y: y - 1 }),
-  BOTTOM: (x, y) => ({ x, y: y + 1 }),
-  RIGHT: (x, y) => ({ x: x + 1, y }),
-  LEFT: (x, y) => ({ x: x - 1, y }),
-}
+  UP: (x, y) => ({x, y: y - 1}),
+  BOTTOM: (x, y) => ({x, y: y + 1}),
+  RIGHT: (x, y) => ({x: x + 1, y}),
+  LEFT: (x, y) => ({x: x - 1, y}),
+};
 
 const KEY_CODES_MAPPER = {
   38: 'UP',
   39: 'RIGHT',
   37: 'LEFT',
-  40: 'BOTTOM'
+  40: 'BOTTOM',
 };
 
 const isBorder = (x, y) =>
   x === 0 || y === 0 || x === GRID_SIZE || y === GRID_SIZE;
 
-const isPosition = (x, y, diffX, diffY) =>
-  x === diffX && y === diffY;
+const isPosition = (x, y, diffX, diffY) => x === diffX && y === diffY;
 
 const getCellCs = (snake, snack, x, y) =>
   cs('grid-cell', {
@@ -44,21 +43,24 @@ const getCellCs = (snake, snack, x, y) =>
     'grid-cell-snack': isPosition(x, y, snack.coordinate.x, snack.coordinate.y),
   });
 
-const doChangeDirection = (direction) => () => ({
+const doChangeDirection = direction => () => ({
   playground: {
-    direction
-  }
+    direction,
+  },
 });
 
 const applySnakePosition = prevState => {
   const directionFn = DIRECTION_TICKS[prevState.playground.direction];
-  const coordinate  = directionFn(prevState.snake.coordinate.x, prevState.snake.coordinate.y)
+  const coordinate = directionFn(
+    prevState.snake.coordinate.x,
+    prevState.snake.coordinate.y,
+  );
 
   return {
     snake: {
       coordinate,
-    }
-  }
+    },
+  };
 };
 
 class App extends Component {
@@ -73,14 +75,14 @@ class App extends Component {
         coordinate: {
           x: 20,
           y: 10,
-        }
+        },
       },
       snack: {
         coordinate: {
           x: 25,
           y: 10,
-        }
-      }
+        },
+      },
     };
   }
 
@@ -98,19 +100,18 @@ class App extends Component {
 
   onTick = () => {
     this.setState(applySnakePosition);
-  }
+  };
 
-  onChangeDirection = (e) => {
+  onChangeDirection = e => {
     const direction = KEY_CODES_MAPPER[e.keyCode];
 
     if (direction) {
       this.setState(doChangeDirection(direction));
     }
-  }
-
+  };
 
   render() {
-    const { snake, snack } = this.state;
+    const {snake, snack} = this.state;
 
     return (
       <div className="app">
@@ -121,34 +122,18 @@ class App extends Component {
   }
 }
 
-const Grid = ({ snake, snack }) =>
-  <div>
-    {GRID.map(y =>
-      <Row
-        y={y}
-        key={y}
-        snake={snake}
-        snack={snack}
-      />
-    )}
-  </div>
+const Grid = ({snake, snack}) => (
+  <div>{GRID.map(y => <Row y={y} key={y} snake={snake} snack={snack} />)}</div>
+);
 
-
-const Row = ({ snake, snack, y }) =>
+const Row = ({snake, snack, y}) => (
   <div className="grid-row">
-    {GRID.map(x =>
-      <Cell
-        x={x}
-        y={y}
-        key={x}
-        snake={snake}
-        snack={snack}
-      />
-    )}
+    {GRID.map(x => <Cell x={x} y={y} key={x} snake={snake} snack={snack} />)}
   </div>
+);
 
-const Cell = ({ snake, snack, x, y }) =>
-  <div className={getCellCs(snake, snack, x, y)}></div>
-
+const Cell = ({snake, snack, x, y}) => (
+  <div className={getCellCs(snake, snack, x, y)} />
+);
 
 export default App;
